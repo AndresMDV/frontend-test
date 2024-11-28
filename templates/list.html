@@ -1,10 +1,15 @@
 {% load static %}
 
 {% for product in products %}
-    <div class="flex flex-row">
-        {{ product.name }}<br>
-        {{ product.description }}<br>
-        {{ product.price }}<br>
-        <img src="{% static 'img/'|add:product.img %}" alt="{{ product.name }}" />
+    <div class="w-full mb-7 justify-center rounded-lg border-2 border-gray-200 flex flex-col h-full lg:items-center lg:ring-offset-2 lg:ring lg:ring-gray-300">
+        <img class="mx-auto w-80 h-80 my-10 lg:w-32 lg:h-32 lg:my-5" src="{% static 'img/'|add:product.img %}" alt="{{ product.name }} " />
+        <div class="flex flex-col">
+            <h2 class="text-4xl font-bold mx-8 text-black font-sans lg:text-lg lg:mx-5">{{ product.name }}</h2><br>
+            <p class="text-3xl mx-8 text-gray-400 lg:text-base lg:mx-5">{{ product.description }}</p><br>
+        </div>
+        <div class="mt-auto lg:-mt-3">
+            <h2 class="text-4xl font-semibold ml-8 tracking-wide mb-16 before:content-['$'] price lg:text-lg lg:mb-6 lg:ml-8">{{ product.price|floatformat:"0g"}}</h2>
+            <button class="bg-spacex-gray-100 border border-gray-300 w-full h-24 text-3xl font-semibold lg:h-10 lg:text-base lg:w-36 lg:rounded-lg lg:ml-0 lg:ring-offset-2 lg:ring lg:ring-gray-300">AGREGAR</button>
+        </div>
     </div>
 {% endfor %}

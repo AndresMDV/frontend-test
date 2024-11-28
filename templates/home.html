@@ -2,10 +2,129 @@
 {% load static humanize %}
 
 {% block body %}
-<h1 class="text-2xl font-bold">Cervezas</h1>
-{% include 'list.html' %}
-{% endblock %}
+<section class="absolute">
+    {% block header %}
+        {% include 'layout/_header.html' %}
+    {% endblock %}
+    <h1 class="text-8xl tracking-wide font-semibold flex justify-center mt-32 mb-20 lg:text-4xl lg:mb-8 lg:mt-8">Cervezas</h1>
+    <div id="product-list" class="grid gap-10 grid-cols-2 mx-10 lg:gap-14 lg:grid-cols-4 lg:mx-14 ">
+        {% include 'list.html' %}
+    </div>
+    <div class="mx-10 my-10 rounded-lg border-2 border-gray-200 flex justify-between lg:mx-8 lg:rounded-lg lg:ring-offset-2 lg:ring lg:ring-gray-300 lg:h-20">
+        <div class="flex-col items-center my-6 ml-14 lg:my-0">
+            <h2 class="text-gray-800 text-3xl tracking-wide lg:text-xl">Sigue mercando</h2>
+            <h2 class="text-7xl font-bold tracking-wide lg:text-2xl" >Vinos</h2>
+        </div>
+        <div class="flex items-center">
+            <button class="w-16 mr-12 lg:w-10">
+                {% include 'svg/arrow-right.html' %}
+            </button>
+        </div>
+    </div>
+    {% block footer %}
+        {% include 'layout/_footer.html' %}
+    {% endblock %}
 
+    <section x-data="visibleForm()">
+        <div class="fixed inset-x-0 bottom-0 flex justify-center mb-7 space-x-5 text-4xl lg:left-0 lg:right-3/4 lg:text-lg lg:-ml-24 lg:-bottom-5">
+            <button id="filterButtonForm"  class="bg-black w-96 h-24 text-white px-4 border-solid border-4 rounded-lg border-gray-300 flex items-center justify-center space-x-2 lg:w-52 lg:h-12 lg:border-gray-400" @click="isVisible()">
+                <span class="text-white font-semibold">FILTRAR</span>
+                <span class="w-10 lg:w-6">{% include 'svg/filters.html' %}</span>
+                <span x-show="checks1" class="bg-white text-black w-16 rounded-full font-bold text-3xl lg:w-8 lg:text-base"></span>
+            </button>
+        </div>
+        <div x-show="open" >
+            <div id="overlay" class="fixed inset-0 bg-black opacity-50 h-auto " x-show="open"></div>
+            <div id="filterDiv" class="fixed w-full h-auto bottom-0 bg-white lg:left-0 lg:h-full lg:w-96"  x-show="open" >
+                <div class="relative border-gray-300 h-full">
+                    <div class="absolute top-0 right-10 -mt-12 w-20 h-20 rounded-lg border-2 flex items-center justify-center ml-10 bg-gray-50 lg:top-14 lg:w-8 lg:h-8 lg:right-3">
+                        <button id="closeButton" class="w-10 h-10 lg:w-5 lg:h-5" @click="close()">
+                            {% include 'svg/close.html' %}
+                        </button>
+                    </div>
+                    <form id="filterForm" class="flex flex-col h-full" hx-boost="true" hx-get="{% url 'prototype' %}" hx-target="#product-list" hx-swap="innerHTML show:window:top" x-data="{checks: null}" @click="count()">
+                        <section class="flex flex-col h-full p-10 lg:p-5">
+                            <h2 class="text-5xl font-bold mt-0 mb-10 lg:text-2xl lg:-mt-3">Filters</h2>
+                            <div class="flex flex-col font-light text-4xl space-y-10 lg:text-xl lg:space-y-1" x-data="{checks: 0}">
+                                <label class="flex justify-between items-center border-t border-b border-gray-300 py-8 lg:py-1">
+                                    <span class="">Rubia</span>
+                                    <input type="checkbox" name="filter" value="1" class=" accent-black ml-4 w-12 h-12 lg:w-6 lg:h-6 " >
+                                </label>
+                                <label class="flex justify-between items-center border-b border-gray-300 pb-8 lg:py-1 lg:pb-1">
+                                    <span class="">Morena</span>
+                                    <input type="checkbox" name="filter" value="2" class=" ml-4 w-12 h-12 accent-black lg:w-6 lg:h-6">
+                                </label>
+                                <label class="flex justify-between items-center border-b border-gray-300 pb-8 lg:py-1 lg:pb-1">
+                                    <span class="">Roja</span>
+                                    <input type="checkbox" name="filter" value="3" class="ml-4 w-12 h-12 accent-black lg:w-6 lg:h-6">
+                                </label>
+                            </div>
+                        </section>
+                        <section class="w-full m-0 p-0 ml-0 pl0 bg-gray-50">
+                            <div class="mt-auto py-10 flex justify-center space-x-5 text-3xl lg:text-base">
+                                <button type="button" id="clearButton" class="bg-gray-300 text-black px-4 py-2 rounded w-2/5 h-20 font-semibold mr-5 lg:h-12 lg:w-44" hx-boost="true" hx-get="{% url 'prototype' %}" hx-target="#product-list" hx-swap="innerHTML show:window:top" @click="clearCheckboxes();">LIMPIAR</button>
+                                <button type="submit" id="filterButton" class="bg-black w-2/5 h-20 text-white px-4 py-2 rounded ml-5 flex items-center justify-center space-x-2 lg:h-12" @click="close()">
+                                    <span class="font-semibold">FILTRAR</span>
+                                    <span class="w-10 lg:w-6">{% include 'svg/filters.html' %}</span>
+                                    <span x-show="checks2" class="bg-white text-black w-16 rounded-full font-bold lg:w-6 lg:text-base">1</span>
+                                </button>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock body %}
 {% block js %}
     <script type="module" src="{% static 'js/general.js' %}"></script>
-{% endblock %}
+    <script>
+        function price() {
+            const prices = document.querySelectorAll('.price');
+            prices.forEach(price => {
+                price.textContent = price.textContent.replace(/,/g, '.');
+            });
+        }
+        function visibleForm(){
+            return {
+                open: false,
+                checks1: false,
+                checks2: false,
+                isVisible() {
+                    this.open = true;
+                },
+                close(){
+                    this.open = false;
+                },
+                clearCheckboxes() {
+
+                    this.open = false;
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                },
+                count(){
+                    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                    var cont = 0;
+                    for (var x=0; x < checkboxes.length; x++) {
+                        if (checkboxes[x].checked) {
+                            cont = cont + 1;
+                            this.checks1 = true;
+                            this.checks2 = true;
+                            num = document.getElementById('filterButton').querySelectorAll('span')[2];
+                            num1 = document.getElementById('filterButtonForm').querySelectorAll('span')[2];
+                            num.innerText = cont;
+                            num1.innerText = cont;
+                        }
+                    }
+                    if (cont == 0) {
+                        this.checks1 = false;
+                        this.checks2 = false;
+                    }
+
+                }
+            }
+        }
+    </script>
+{% endblock js %}

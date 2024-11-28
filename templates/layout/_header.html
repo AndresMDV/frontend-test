@@ -1,0 +1,20 @@
+
+
+<header id="header" class="w-full h-44 bg-black lg:h-10 ">
+    <section class="flex justify-between pt-14 lg:pt-0">
+        <div class="col-span-7">
+            <div class="w-16 ml-10 lg:w-8 lg:ml-2 lg:mt-1">
+                {% include 'svg/menu.html'%}
+            </div>
+        </div>
+        <div class="flex-grow-0 px-14 lg:px-8 lg:pt-2  ">
+            <button class="w-16 mr-6 lg:w-7 " type="button" aria-label="search">
+                {% include 'svg/search.html' %}
+            </button>
+            <button class="w-16 static lg:w-7  " type="button" aria-label="open cart">
+                {% include 'svg/cart.html' %}
+                <span class="absolute top-10 right-10 bg-red-700 text-white font-semibold rounded-full w-10 h-10 text-2xl lg:w-4 lg:h-4 lg:top-1 lg:right-6 lg:text-xs">9</span>
+            </button>
+        </div>
+    </section>
+</header>

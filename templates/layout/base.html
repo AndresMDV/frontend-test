@@ -9,15 +9,17 @@
         <meta name="apple-mobile-web-app-title" content="axiacore">
         <link rel="apple-touch-icon-precomposed" href="{% static 'img/apple-touch-icon.png' %}">
         <link rel="icon" href="{% static 'img/favicon.png' %}">
+        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+        <script ssrc="https://unpkg.com/htmx.org@1.6.1"></script>
         {% block css %}
             {% tailwind_css %}
         {% endblock %}
         {% block extra_head %}{% endblock %}
     </head>
-    <body class="{% block body_classes %}{% endblock %}">
+    <body class="{% block body_classes %}{% endblock %} ">
         {% block body %}
         {% endblock body %}
         {% block js %}
-        {% endblock %}
+        {% endblock js%}
     </body>
 </html>
